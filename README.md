@@ -3,7 +3,7 @@
 # Introduction
 Still in development so don't use.
 
-#Usage
+# Usage
 Install all dependencies
 ```
 npm i
