@@ -1,6 +1,6 @@
 /*
 
-
+Discord music bot main
 
 */
 
@@ -8,11 +8,13 @@ require('dotenv').config();
 
 const {REST} = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { Client, GatewayIntentBits , Collection, Events } = require('discord.js');
+const { Client, GatewayIntentBits , Collection, Events, ActivityType } = require('discord.js');
 const { Player } = require("discord-player")
 
 const fs = require('fs');
 const path = require('path');
+
+
 
 // Creating a new client instance
 const client = new Client({
@@ -48,26 +50,25 @@ for (const file of commandFiles) {
 
 }
 
-// No clue what this does yet
 client.player = new Player(client, {
     ytdlOptions: {
+        filter: 'audioonly',
         quality: "highestaudio",
+        format: 'mp3',
         highWaterMark: 1 << 25
     }
-})
+});
 
 // Once the bot is ready to go online
 client.once(Events.ClientReady, () => {
     console.log("-> [Successfully logged in]")
-    client.user.setPresence({
-        activities: [{name: 'funny little music bot'}], status: 'idle'
-    })
+
 });
 
 // This code runs anytime someone interacts with the bot
-client.on(Events.InteractionCreate, async interaction => {
+client.on("interactionCreate", async interaction => {
     // Ignore if the chat is not an interaction
-	if (!interaction.isChatInputCommand()) return;
+	if (!interaction.isCommand()) return;
 
     // Creating a reference to the commands
 	const command = interaction.client.commands.get(interaction.commandName);
@@ -77,7 +78,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
     // Execute the interaction
 	try {
-		await command.execute(interaction);
+		await command.execute({client, interaction});
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {
