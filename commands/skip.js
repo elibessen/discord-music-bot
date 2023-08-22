@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ActivityType } = require("discord.js");
 
 module.exports = {
     name: "skip",
@@ -8,6 +8,13 @@ module.exports = {
         .setDescription('Skips the current song'),
     
         execute: async({client, interaction}) => {
+
+            // function updatePresence(queue){
+            //     client.user.setPresence({
+            //         activities: [{name: `${queue.currentTrack}`, type: ActivityType.Listening} ], status: 'online'
+            //     })
+            
+            // }            
 
             if (!interaction.member.voice.channel) return interaction.reply("❌ You need to be in a voice channel to skip a song!");
 
@@ -21,6 +28,8 @@ module.exports = {
             const nowplaying = queue.currentTrack;
 
             queue.node.skip()
+
+            // updatePresence(queue)
 
             await interaction.reply({
                 embeds: [

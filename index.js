@@ -62,6 +62,9 @@ client.player = new Player(client, {
 // Once the bot is ready to go online
 client.once(Events.ClientReady, () => {
     console.log("-> [Successfully logged in]")
+    client.user.setPresence({
+        activities: [{name: `Music!`, type: ActivityType.Listening} ], status: 'online'
+    })
 
 });
 

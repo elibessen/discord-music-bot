@@ -1,3 +1,9 @@
+/*
+
+Help command
+
+*/
+
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const  { EmbedBuilder, Embed } = require("discord.js");
 

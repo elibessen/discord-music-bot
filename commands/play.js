@@ -1,16 +1,16 @@
+/*
 
+Play command
+Sub commands:
+    - playlist (URL)
+    - play (URL)
+
+*/
 
 
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder, ActivityType  } = require("discord.js");
-const { Player, QueryType } = require("discord-player");
-
-// function updatePresence(result){
-//     client.user.setPresence({
-//         activities: [{name: `${result.tracks.length}`, type: ActivityType.Listening} ], status: 'online'
-//     })
-
-// }
+const { EmbedBuilder  } = require("discord.js");
+const { QueryType } = require("discord-player");
 
 module.exports = {
     name: "play",
@@ -40,7 +40,6 @@ module.exports = {
                     option.setName("url").setDescription("the song's url").setRequired(true))
 		),
         execute: async ({client, interaction}) => {
-
             await client.player.extractors.loadDefault();
 
             // Checking if the user is in the voice channel
