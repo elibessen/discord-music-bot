@@ -5,9 +5,12 @@ module.exports = {
     name: "queue",
     data: new SlashCommandBuilder()
         .setName('queue')
-        .setDescription('Show the first 10 songs in queue'),
+        .setDescription('🗒️ Show the first 10 songs in queue'),
 
     execute: async({client, interaction}) => {
+
+        if (!interaction.member.voice.channel) return interaction.reply("❌ You need to be in a voice channel to view the queue!");
+
         const queue = client.player.nodes.get(interaction.guild.id);
         const tracks = queue.tracks.map((track, index) => `${++index}. ${track}`);
 
@@ -20,15 +23,18 @@ module.exports = {
             return;
         }
 
+        let currentSong = queue.currentTrack;
+
         tracksQueue = tracks.slice(0, 15).join('\n')
 
         await interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setDescription(`**Currently Playing**\n` + 
-                        (nowplaying ? `\`[${nowplaying.duration}]\` ${nowplaying.title}` : "None") +
+                        (nowplaying ? `\`[${currentSong.duration}]\` ${currentSong.title}` : "None") +
                         `\n\n**Queue**\n${tracksQueue}`
                     )
+                    .setThumbnail(queue.currentTrack.thumbnail)
             ]
         })
     }
