@@ -12,19 +12,21 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder  } = require("discord.js");
 const { QueryType } = require("discord-player");
 
+const wait = require('node:timers/promises').setTimeout;
+
 module.exports = {
     name: "play",
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('Play a song from youtube')
-        // .addSubcommand(subcommand =>
-		// 	subcommand
-		// 		.setName("search")
-		// 		.setDescription("Searches for a song and plays it")
-		// 		.addStringOption(option =>
-		// 			option.setName("searchterms").setDescription("search keywords").setRequired(true)
-		// 		)
-		// )
+        .addSubcommand(subcommand =>
+			subcommand
+				.setName("search")
+				.setDescription("Searches for a song and plays it")
+				.addStringOption(option =>
+					option.setName("searchterms").setDescription("search keywords").setRequired(true)
+				)
+		)
         .addSubcommand(subcommand =>
 			subcommand
 				.setName("playlist")
@@ -68,6 +70,7 @@ module.exports = {
                 const song = result.tracks[0]
 
                 await queue.node.play(song)
+                
                 embed
                     .setDescription(`**[${song.title}](${song.url})** has been added to the Queue`)
                     .setThumbnail(song.thumbnail)
@@ -86,7 +89,7 @@ module.exports = {
                 })
 
                 if (result.tracks.length === 0){
-                    return interaction.reply(`❌ | No playlists found with ${url}`);
+                    return interaction.reply(`❌ No playlists found with ${url}`);
                 }
 
                 const playlist = result.playlist;
@@ -94,33 +97,35 @@ module.exports = {
                 embed.setDescription(`**${result.tracks.length} songs from [${playlist.title}](${playlist.url})** have been added to the Queue`).setThumbnail(playlist.thumbnail)
 
             } 
-            // else if (interaction.options.getSubcommand() === "search") {
-            //     let url = interaction.options.getString("searchterms");
-            //     const result = await client.player.search(url, {
-            //         requestedBy: interaction.user,
-            //         searchEngine: QueryType.AUTO
-            //     })
+            else if (interaction.options.getSubcommand() === "search") {
+                let url = interaction.options.getString("searchterms");
+                const result = await client.player.search(url, {
+                    requestedBy: interaction.user,
+                    searchEngine: QueryType.AUTO
+                })
 
-            //     if (result.tracks.length === 0){
-            //         return interaction.editReply("No results")
-            //     }
+                if (result.tracks.length === 0){
+                    return interaction.editReply("❌ No results")
+                }
 
 
-            //     const song = result.tracks[0];
-            //     await queue.node.play(song);
+                const song = result.tracks[0];
+                await queue.node.play(song);
 
-            //     embed
-            //     .setDescription(`**[${song.title}](${song.url})** has been added to the Queue`)
-            //     .setThumbnail(song.thumbnail)
-            //     .setFooter({ text: `Duration: ${song.duration}`})
-            // }
+                embed
+                .setDescription(`**[${song.title}](${song.url})** has been added to the Queue`)
+                .setThumbnail(song.thumbnail)
+                .setFooter({ text: `Duration: ${song.duration}`})
+            }
 
             if (!queue.isPlaying) {
                 await queue.node.play()
             }
 
-            await interaction.reply({
-                embeds: [embed]
+            await interaction.deferReply()
+
+            await interaction.editReply({
+                embeds: [embed],
             })
         },
 }

@@ -23,7 +23,7 @@ module.exports = {
         {
             await interaction.reply("There are no songs in the queue");
             return;
-        }
+        }   
 
         const tracks = queue.tracks.map((track, index) => `${++index}. ${track}`);
 

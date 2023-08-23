@@ -23,6 +23,7 @@ module.exports = {
                         .addFields(
                             {name: '/play song', value: 'Plays a single song from YouTube (URL).'},
                             {name: '/play playlist', value: 'Plays an entire playlist from YouTube (URL).'},
+                            {name: '/play search', value: 'Search for a song on YouTube.'},
                             {name: '/skip', value: 'Skips the current song.'},
                             {name: '/queue', value: 'Lists the first 15 songs in the queue.'},
                             {name: '/exit', value: 'Kicks the bot from the voice call.'}
