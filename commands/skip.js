@@ -7,30 +7,22 @@ module.exports = {
         .setName('skip')
         .setDescription('Skips the current song'),
     
-        execute: async({client, interaction}) => {
+        execute: async({client, interaction}) => {       
 
-            // function updatePresence(queue){
-            //     client.user.setPresence({
-            //         activities: [{name: `${queue.currentTrack}`, type: ActivityType.Listening} ], status: 'online'
-            //     })
-            
-            // }            
-
+            // Validation
             if (!interaction.member.voice.channel) return interaction.reply("❌ You need to be in a voice channel to skip a song!");
 
             const queue = client.player.nodes.get(interaction.guild.id);
 
-            if(!queue){
-                await interaction.reply("❌ !");
-                return;
-            }
-
+            if(!queue) return interaction.reply("❌ There are no songs in the queue!");
+            
+            // The current song playing
             const nowplaying = queue.currentTrack;
 
+            // Skip the song
             queue.node.skip()
 
-            // updatePresence(queue)
-
+            // Complete the command
             await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
