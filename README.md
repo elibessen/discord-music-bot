@@ -2,7 +2,6 @@
 🎶 A Discord music bot with simple commands and easy to run yourself.
 
 ## Commands
----
 - `/play (song, playlist, search)`
 - `/queue`
 - `/shuffle`
@@ -13,7 +12,6 @@
 - `/ping`
 
 ## Supported sources and formats
-___
 #### Sources
 - YouTube
 - Spotify (Coming soon)
@@ -23,7 +21,6 @@ ___
 - mp3
 
 ## Setup
-___
 This bot uses [ffmpeg](https://ffmpeg.org/) to handle the audio streams. A good installation tutorial is [here](https://www.youtube.com/watch?v=IECI72XEox0&t).
 
 
