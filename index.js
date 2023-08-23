@@ -65,7 +65,6 @@ client.once(Events.ClientReady, () => {
     client.user.setPresence({
         activities: [{name: `Music!`, type: ActivityType.Listening} ], status: 'online'
     })
-
 });
 
 // This code runs anytime someone interacts with the bot

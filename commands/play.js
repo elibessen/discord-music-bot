@@ -44,6 +44,8 @@ module.exports = {
         execute: async ({client, interaction}) => {
             await client.player.extractors.loadDefault();
 
+            await interaction.deferReply()
+
             // Checking if the user is in the voice channel
             if (!interaction.member.voice.channel) return interaction.reply("❌ You need to be in a voice channel to play a song!");
 
@@ -121,8 +123,6 @@ module.exports = {
             if (!queue.isPlaying) {
                 await queue.node.play()
             }
-
-            await interaction.deferReply()
 
             await interaction.editReply({
                 embeds: [embed],
