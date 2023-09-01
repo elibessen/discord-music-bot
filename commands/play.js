@@ -102,7 +102,7 @@ module.exports = {
                 // Running a search on YouTube for playlists based on the URL
                 const result = await client.player.search(url, {
                     requestedBy: interaction.user,
-                    searchEngine: QueryType.YOUTUBE_PLAYLIST
+                    searchEngine: QueryType.PLAYLIST
                 })
 
                 // If the search returns with no results
